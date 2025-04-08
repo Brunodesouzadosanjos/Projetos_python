@@ -1,6 +1,69 @@
 import os
 import time
-lista = []
+
+import customtkinter as ctk
+
+# Criação da janela principal
+app = ctk.CTk()
+app.geometry("400x300")
+app.title("Lista de Compras")
+
+lista = []  # Lista de produtos
+
+# Funções para adicionar, apagar e listar produtos
+def adicionar():
+    produto = entry.get()
+    if produto:
+        lista.append(produto)
+        label_status.configure(text=f'Produto "{produto}" adicionado.')
+        entry.delete(0, ctk.END)
+
+def apagar():
+    try:
+        indice = int(entry.get())
+        if 0 <= indice < len(lista):
+            produto = lista.pop(indice)
+            label_status.configure(text=f'Produto "{produto}" apagado.')
+        else:
+            label_status.configure(text="Índice inválido.")
+    except ValueError:
+        label_status.configure(text="Por favor, insira um número válido.")
+    entry.delete(0, ctk.END)
+
+def listar():
+    texto = "\n".join([f"{i} - {prod}" for i, prod in enumerate(lista)])
+    label_lista.configure(text=texto if texto else "Lista vazia.")
+
+# Layout da interface
+label_instrucoes = ctk.CTkLabel(app, text="Digite um produto ou índice:")
+label_instrucoes.pack(pady=10)
+
+entry = ctk.CTkEntry(app, width=250)
+entry.pack(pady=10)
+
+button_adicionar = ctk.CTkButton(app, text="Adicionar Produto", command=adicionar)
+button_adicionar.pack(pady=5)
+
+button_apagar = ctk.CTkButton(app, text="Apagar Produto", command=apagar)
+button_apagar.pack(pady=5)
+
+button_listar = ctk.CTkButton(app, text="Listar Produtos", command=listar)
+button_listar.pack(pady=5)
+
+label_status = ctk.CTkLabel(app, text="")
+label_status.pack(pady=10)
+
+label_lista = ctk.CTkLabel(app, text="")
+label_lista.pack(pady=10)
+
+# Rodando o aplicativo
+app.mainloop()
+
+
+
+lista = []#criação de lista vazia para receber os produtos 
+
+#Criando funções para as opções
 def adicionar():
     adicionar_produto = input('Produto: ')
     lista.append(adicionar_produto)
@@ -16,7 +79,7 @@ def listar():
         indice,nome = produto
         print(indice,nome)
 
-
+#Criando loop para mander o codigo rodando
 while True == True:
     opcao = input('''
     *******************************************
@@ -50,4 +113,3 @@ while True == True:
         os.system('cls')
     
 os.system('cls')
-
